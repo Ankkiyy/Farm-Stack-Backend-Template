@@ -7,17 +7,16 @@ This is Farm Stack Backend Template with Production Version Routing Support, Two
 ```
 python -m venv venv
 ```
-
-2. install req.txt using Pip
+2. Now Activate the environment
 ```
-pip install -r req.txt
+windows :  venv\Scripts\Activate
 ```
 
 3. Configure the Port you want to use in server.py
 
-4. Now Activate the environment
+4. install req.txt using Pip
 ```
-windows :  venv\Scripts\Activate
+pip install -r req.txt
 ```
 
 5. Now run Server.py
