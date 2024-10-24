@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+from fastapi import HTTPException
 from api.db import rooms_collection
 from bson.objectid import ObjectId
 from typing import List, Optional
@@ -19,7 +20,9 @@ class Room(BaseModel):
         """ Adds a new room to the collection. """
         try:
             if rooms_collection.find_one({'name': name}):
-                raise Exception('Room already exists')
+                raise HTTPException(status_code=409, detail={
+                    "message": "Room already Exists"
+                })
             rooms_collection.insert_one({'name': name, 'password': password})
         except Exception as e:
             raise e

@@ -15,5 +15,5 @@ async def hello_world():
             "message" : "Welcome to the API"
         }
     }
-    
+
 router.include_router(room_router, prefix="/room", tags=["API Version 1"])

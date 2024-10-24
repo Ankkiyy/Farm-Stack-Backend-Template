@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from api.models.Room import Room
 import json
 
@@ -33,20 +33,23 @@ async def create_room(room: Room):
                 "message" : "Room Added Successfully"
             }
         }
+    except HTTPException as http_exc:
+        raise http_exc  # Re-raise HTTPExceptions to allow FastAPI to handle them properly
     except ValueError as e:
-        return {
+        detail = {
             "status": 400,
             "status_message": "Bad Request",
             "data": {
                 "message": str(e)
             }
         }
+        raise HTTPException(status_code=400, detail=detail)
     except Exception as e:
         return {
-            "status" : 500,
-            "status_message" : "Internal Server Error",
-            "data" : {
-                "message" : str(e)
+            "status": 500,
+            "status_message": "Internal Server Error",
+            "data": {
+                "message": str(e)
             }
         }
         
