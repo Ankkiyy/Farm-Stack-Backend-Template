@@ -58,12 +58,12 @@ async def create_room(room: Room):
 @router.get("/list", response_description="Get All Rooms")
 async def list_rooms():
     rooms = Room.get_rooms()
-    rooms_json = [{"roomId": room["id"], "roomName": room["name"]} for room in rooms]
+    rooms_list = [{"roomId": room["id"], "roomName": room["name"]} for room in rooms]
 
     return {
         "status" : 200,
         "status_message" : "OK",
         "data" : {
-            "rooms" : rooms_json
+            "rooms" : rooms_list
         },
     }
