@@ -1,5 +1,6 @@
-import socketio
+import socketio 
 from api.models.Room import Room
+from api.models.Device import Device  # Import the Device model
 
 sio_server = socketio.AsyncServer(
     async_mode='asgi',
@@ -25,7 +26,7 @@ async def join_room(sid, data):
 
     if room and room['password'] == password:
         room_id = str(room['_id'])
-        Room.add_device(room_id, sid)  # Add the device (sid) to the room
+        Device.add_device(room_id, sid)  # Use Device model to add the device
         await sio_server.save_session(sid, {'room': room_name})
         sio_server.enter_room(sid, room_name)
         await sio_server.emit('message', {'data': f"{sid} has joined the room."}, room=room_name)
