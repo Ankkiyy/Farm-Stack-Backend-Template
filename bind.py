@@ -7,7 +7,6 @@ app = FastAPI()
 
 app.include_router(router , tags=["/api"], prefix="/api")
 
-
 sio_app = socketio.ASGIApp(
     socketio_server=sio_server,
     socketio_path='sockets',
