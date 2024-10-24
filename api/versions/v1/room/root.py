@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 from api.models.Room import Room
-from api.db import add_room, get_rooms
 import json
 
 router = APIRouter()
@@ -27,7 +26,7 @@ async def hello_world():
 @router.post("/create", response_description="Add New Room")
 async def create_room(room: Room):
     try:
-        add_room(room.name, room.password)
+        Room.add_room(room.name, room.password)
         return {
             "status" : 200,
             "status_message" : "OK",
@@ -59,7 +58,7 @@ async def create_room(room: Room):
 # Default Port : 10007
 @router.get("/list", response_description="Get All Rooms")
 async def list_rooms():
-    rooms = get_rooms()
+    rooms = Room.get_rooms()
     rooms_json = [{"roomId": room[0], "roomName": room[1]} for room in rooms]
     return {
         "status" : 200,

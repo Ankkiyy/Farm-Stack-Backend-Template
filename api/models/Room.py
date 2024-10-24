@@ -1,13 +1,21 @@
-from db import rooms_collection
+from pydantic import BaseModel, Field
+from api.db import rooms_collection
 from bson.objectid import ObjectId
+from typing import List, Optional
 
-class Room:
-    def __init__(self, name, password):
-        self.name = name
-        self.password = password
+class Room(BaseModel):
+    name: str
+    password: str
+    id: Optional[str] = Field(None, alias='_id')
+
+    class Config:
+        arbitrary_types_allowed = True
+        json_encoders = {
+            ObjectId: str
+        }
 
     @staticmethod
-    def add_room(name, password):
+    def add_room(name: str, password: str):
         """ Adds a new room to the collection. """
         try:
             if rooms_collection.find_one({'name': name}):
@@ -17,19 +25,19 @@ class Room:
             raise e
 
     @staticmethod
-    def get_rooms():
+    def get_rooms() -> List[dict]:
         """ Retrieves all rooms with their ids and names. """
         rooms = rooms_collection.find({}, {'name': 1})
-        return [(str(room['_id']), room['name']) for room in rooms]
+        return [{'id': str(room['_id']), 'name': room['name']} for room in rooms]
 
     @staticmethod
-    def get_room_by_name(name):
+    def get_room_by_name(name: str) -> Optional[dict]:
         """ Retrieves a room by its name. """
         room = rooms_collection.find_one({'name': name})
         return room
 
     @staticmethod
-    def get_room_by_id(room_id):
+    def get_room_by_id(room_id: str) -> Optional[dict]:
         """ Retrieves a room by its id. """
         if not ObjectId.is_valid(room_id):
             raise Exception('Invalid room ID')
@@ -38,7 +46,7 @@ class Room:
         return room
 
     @staticmethod
-    def delete_room(room_id):
+    def delete_room(room_id: str) -> dict:
         """ Deletes a room by its ID. """
         if not ObjectId.is_valid(room_id):
             raise Exception('Invalid room ID')
@@ -46,5 +54,4 @@ class Room:
         result = rooms_collection.delete_one({'_id': ObjectId(room_id)})
         if result.deleted_count == 0:
             raise Exception('Room not found or already deleted')
-        return result
-
+        return {"message": "Room deleted", "deleted_count": result.deleted_count}
