@@ -17,7 +17,6 @@ async def hello_world():
         }
     }
     
-    
 # Create Room Api 
 # Description : Create a new room for Socket Server
 # Request Type : POST
@@ -59,11 +58,12 @@ async def create_room(room: Room):
 @router.get("/list", response_description="Get All Rooms")
 async def list_rooms():
     rooms = Room.get_rooms()
-    rooms_json = [{"roomId": room[0], "roomName": room[1]} for room in rooms]
+    rooms_json = [{"roomId": room["id"], "roomName": room["name"]} for room in rooms]
+
     return {
         "status" : 200,
         "status_message" : "OK",
         "data" : {
             "rooms" : rooms_json
-        }
+        },
     }
