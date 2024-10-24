@@ -8,3 +8,4 @@ db = client['template']  # Database name
 # Initialize the collection for rooms and devices
 rooms_collection = db['rooms']
 devices_collection = db['devices']
+user_collection = db['users']   # Collection for users
