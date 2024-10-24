@@ -8,8 +8,14 @@ This is Farm Stack Backend Template with Production Version Routing Support, Two
 python -m venv venv
 ```
 2. Now Activate the environment
+
+windows :  
 ```
-windows :  venv\Scripts\Activate
+venv\Scripts\activate
+```
+linux :
+```
+venv\Scripts\activate.sh
 ```
 
 3. Configure the Port you want to use in server.py
