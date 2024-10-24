@@ -1,5 +1,6 @@
 from fastapi import APIRouter
 from api.versions.v1 import router as v1_router
+from api.versions.v2 import router as v2_router
 
 router = APIRouter()
 
@@ -17,7 +18,10 @@ async def hello_world():
         }
     }
     
+# Include the API Versions
+
+# Include the API Version 1
 router.include_router(v1_router, prefix="/v1", tags=["API Version 1"])
-    
-# Your API Updates Goes Here...
-router.include_router(v1_router, prefix="/v2", tags=["API Version 2"])
+
+# Your Future API Updates Goes Here...
+router.include_router(v2_router, prefix="/v2", tags=["API Version 2"])
