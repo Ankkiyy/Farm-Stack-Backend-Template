@@ -22,8 +22,7 @@ async def hello_world():
             "message" : "Welcome to the Mail Home"
         }
     }
-    
-    
+
 # Send Mail Api
 # Description : Send Mail to the User
 # Request Type : POST

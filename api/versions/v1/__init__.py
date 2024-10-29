@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from api.versions.v1.room.root import router as room_router
-from api.versions.v1.Mail.root import router as mail_router
+from api.versions.v1.mail.root import router as mail_router
 
 router = APIRouter()
 
