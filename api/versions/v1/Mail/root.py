@@ -89,10 +89,7 @@ async def verify_otp(request: Request):
         
         if not Otp.verify_otp(email, otp):
             raise HTTPException(status_code=400, detail="Invalid OTP")
-        
-        
-        
-        
+
         return {
             "status" : 200,
             "status_message" : "OK",
@@ -113,20 +110,3 @@ async def verify_otp(request: Request):
         raise HTTPException(status_code=400, detail=detail)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-        
-# Get All Rooms Api
-# Description : Get All Rooms from the Database
-# Request Type : GET
-# Path : http://localhost:port/api/v1/room/list
-# Default Port : 10007
-@router.get("/list", response_description="Get All Rooms")
-async def list_rooms():
-    
-
-    return {
-        "status" : 200,
-        "status_message" : "OK",
-        "data" : {
-            "rooms" : "rooms_list"
-        },
-    }
