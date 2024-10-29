@@ -5,6 +5,7 @@ from api.socket import sio_server
 
 app = FastAPI()
 
+# https://localhost:10007/api
 app.include_router(router , tags=["/api"], prefix="/api")
 
 sio_app = socketio.ASGIApp(

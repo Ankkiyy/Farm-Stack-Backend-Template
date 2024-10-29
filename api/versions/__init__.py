@@ -4,6 +4,7 @@ from api.versions.v2 import router as v2_router
 
 router = APIRouter()
 
+# https://localhost:10007/api/
 @router.get("/", response_description="Api Version Manager route")
 # Define the API Version Manager Route
 async def hello_world():
@@ -21,6 +22,8 @@ async def hello_world():
 # Include the API Versions
 
 # Include the API Version 1
+
+# https://localhost:10007/api/v1
 router.include_router(v1_router, prefix="/v1", tags=["API Version 1"])
 
 # Your Future API Updates Goes Here...
