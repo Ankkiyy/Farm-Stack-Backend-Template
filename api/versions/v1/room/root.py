@@ -1,21 +1,25 @@
 from fastapi import APIRouter, HTTPException
 from api.models.Room import Room
 import json
+from fastapi.responses import JSONResponse
 
 router = APIRouter()
 
 @router.get("/", response_description="Api Version 1 Manager route")
 async def hello_world():
-    return {
-        "location" : "api/v1/room",
-        "message" : "API Version V1 - Initial Version",
-        "version" : "1.0.0",
-        "status" : 200,
-        "status_message" : "OK... Working Version 1",
-        "data" : {
-            "message" : "Welcome to the API"
+    return JSONResponse(
+        status_code=200,
+        content={
+            "location": "api/v1/room",
+            "message": "API Version V1 - Initial Version",
+            "version": "1.0.0",
+            "status": 200,
+            "status_message": "OK... Working Version 1",
+            "data": {
+                "message": "Welcome to the API"
+            }
         }
-    }
+    )
     
 # Create Room Api 
 # Description : Create a new room for Socket Server
@@ -26,13 +30,16 @@ async def hello_world():
 async def create_room(room: Room):
     try:
         Room.add_room(room.name, room.password)
-        return {
-            "status" : 200,
-            "status_message" : "OK",
-            "data" : {
-                "message" : "Room Added Successfully"
+        return JSONResponse(
+            status_code=200,
+            content={
+            "status": 200,
+            "status_message": "OK",
+            "data": {
+                "message": "Room Added Successfully"
             }
-        }
+            }
+        )
     except HTTPException as http_exc:
         raise http_exc  # Re-raise HTTPExceptions to allow FastAPI to handle them properly
     except ValueError as e:
@@ -45,13 +52,16 @@ async def create_room(room: Room):
         }
         raise HTTPException(status_code=400, detail=detail)
     except Exception as e:
-        return {
+        return JSONResponse(
+            status_code=500,
+            content={
             "status": 500,
             "status_message": "Internal Server Error",
             "data": {
                 "message": str(e)
             }
-        }
+            }
+        )
         
 # Get All Rooms Api
 # Description : Get All Rooms from the Database
@@ -63,10 +73,13 @@ async def list_rooms():
     rooms = Room.get_rooms()
     rooms_list = [{"roomId": room["id"], "roomName": room["name"]} for room in rooms]
 
-    return {
-        "status" : 200,
-        "status_message" : "OK",
-        "data" : {
-            "rooms" : rooms_list
-        },
-    }
+    return JSONResponse(
+        status_code=200,
+        content={
+            "status": 200,
+            "status_message": "OK",
+            "data": {
+                "rooms": rooms_list
+            }
+        }
+    )

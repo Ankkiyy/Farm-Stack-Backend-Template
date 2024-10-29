@@ -1,23 +1,29 @@
 from fastapi import APIRouter
 from api.versions.v1 import router as v1_router
 from api.versions.v2 import router as v2_router
+from fastapi.responses import JSONResponse
 
 router = APIRouter()
 
+# https://localhost:10007/api
 # https://localhost:10007/api/
+@router.get("", response_description="Api Version Manager route")
 @router.get("/", response_description="Api Version Manager route")
 # Define the API Version Manager Route
 async def hello_world():
-    return {
-        "location" : "api/",
-        "message" : "Hello World",
-        "version" : "1.0.0",
-        "status" : 200,
-        "status_message" : "OK",
-        "data" : {
-            "message" : "Welcome to the API"
+    return JSONResponse(
+        status_code=200,
+        content={
+            "location": "api/",
+            "message": "Hello World",
+            "version": "1.0.0",
+            "status": 200,
+            "status_message": "OK",
+            "data": {
+                "message": "Welcome to the API"
+            }
         }
-    }
+    )
     
 # Include the API Versions
 

@@ -4,6 +4,7 @@ from api.models.Otp import Otp
 import random
 
 from api.extensions.mail.otpHtmlVariable import getHtml
+from fastapi.responses import JSONResponse
 
 router = APIRouter()
 
@@ -12,16 +13,19 @@ router = APIRouter()
 @router.get("", response_description="Api Mail Home")
 @router.get("/", response_description="Api Mail Home")
 async def hello_world():
-    return {
-        "location" : "api/v1/mail",
-        "message" : "API Version V1 - Initial Version",
-        "version" : "1.0.0",
-        "status" : 200,
-        "status_message" : "OK... Working Mail Home",
-        "data" : {
-            "message" : "Welcome to the Mail Home"
-        }
-    }
+    return JSONResponse(
+        content={
+            "location": "api/v1/mail",
+            "message": "API Version V1 - Initial Version",
+            "version": "1.0.0",
+            "status": 200,
+            "status_message": "OK... Working Mail Home",
+            "data": {
+                "message": "Welcome to the Mail Home"
+            }
+        },
+        status_code=200
+    )
 
 # Send Mail Api
 # Description : Send Mail to the User
@@ -45,13 +49,16 @@ async def send_otp(request: Request):
 
         MAIL.sendHtmlMail(email, "Furniture Management System", "OTP for the Verification", f"Your OTP is {otp}", getHtml(otp))
 
-        return {
-            "status" : 200,
-            "status_message" : "OK",
-            "data" : {
-                "message" : "OTP Sent Successfully to " + email 
+        return JSONResponse(
+            content={
+            "status": 200,
+            "status_message": "OK",
+            "data": {
+                "message": "OTP Sent Successfully to " + email
             }
-        }
+            },
+            status_code=200
+        )
     except HTTPException as http_exc:
         raise http_exc
     except ValueError as e:
@@ -89,13 +96,16 @@ async def verify_otp(request: Request):
         if not Otp.verify_otp(email, otp):
             raise HTTPException(status_code=400, detail="Invalid OTP")
 
-        return {
-            "status" : 200,
-            "status_message" : "OK",
-            "data" : {
-                "message" : "Otp Verified Successfully"
+        return JSONResponse(
+            content={
+            "status": 200,
+            "status_message": "OK",
+            "data": {
+                "message": "Otp Verified Successfully"
             }
-        }
+            },
+            status_code=200
+        )
     except HTTPException as http_exc:
         raise http_exc  # Re-raise HTTPExceptions to allow FastAPI to handle them properly
     except ValueError as e:
