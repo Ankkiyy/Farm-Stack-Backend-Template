@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException, Request
 from api.extensions.mail import MAIL
-from api.models.Otp import Otp
 import random
 
 from api.extensions.mail.otpHtmlVariable import getHtml
@@ -43,9 +42,6 @@ async def send_otp(request: Request):
             raise HTTPException(status_code=400, detail="Email is required")
 
         otp = random.randint(100000, 999999)
-
-        # Add otp in DB for Verification
-        Otp.add_otp(email, str(otp))
 
         MAIL.sendHtmlMail(email, "Furniture Management System", "OTP for the Verification", f"Your OTP is {otp}", getHtml(otp))
 
@@ -93,9 +89,6 @@ async def verify_otp(request: Request):
         if not otp:
             raise HTTPException(status_code=400, detail="OTP is required")
         
-        if not Otp.verify_otp(email, otp):
-            raise HTTPException(status_code=400, detail="Invalid OTP")
-
         return JSONResponse(
             content={
             "status": 200,

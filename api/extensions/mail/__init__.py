@@ -13,7 +13,7 @@ load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), '../../.env'))
 
 class MAIL:
     MAIL_SERVER = os.getenv("MAIL_SERVER")
-    MAIL_PORT = int(os.getenv("MAIL_PORT"))
+    MAIL_PORT = os.getenv("MAIL_PORT")
     MAIL_USERNAME = os.getenv("MAIL_USERNAME")
     MAIL_PASSWORD = os.getenv("MAIL_PASSWORD")
     MAIL_USE_TLS = os.getenv("MAIL_USE_TLS") == "True"
@@ -23,9 +23,9 @@ class MAIL:
     def _create_server_connection():
         server = None
         if MAIL.MAIL_USE_SSL:
-            server = smtplib.SMTP_SSL(MAIL.MAIL_SERVER, MAIL.MAIL_PORT)
+            server = smtplib.SMTP_SSL(MAIL.MAIL_SERVER, int( MAIL.MAIL_PORT))
         else:
-            server = smtplib.SMTP(MAIL.MAIL_SERVER, MAIL.MAIL_PORT)
+            server = smtplib.SMTP(MAIL.MAIL_SERVER, int(MAIL.MAIL_PORT))
             if MAIL.MAIL_USE_TLS:
                 server.starttls()
         server.login(MAIL.MAIL_USERNAME, MAIL.MAIL_PASSWORD)

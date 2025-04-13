@@ -1,14 +1,33 @@
+import os
 from pymongo import MongoClient
-from bson.objectid import ObjectId
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 
-# Initialize MongoDB connection
-client = MongoClient('mongodb://localhost:27017/')
-db = client['template']  # Database name
+MONGO_SERVER_URL = os.getenv('MONGO_SERVER_URL', 'mongodb://localhost:27017')  # Default to localhost if not set
+MONGO_DB_NAME = os.getenv('MONGO_DB_NAME', 'template')  # Default to localhost if not set
 
-# Initialize the collection for rooms and devices
-rooms_collection = db['rooms']
-devices_collection = db['devices']
-otp_collection = db['otps']   # Collection for OTPs
+DB_TYPE = os.getenv('DB_TYPE', 'mongodb')  # Default to MongoDB if not set
 
-user_collection = db['users']   # Collection for users
+if DB_TYPE == 'mongodb':
+    # Initialize MongoDB connection
+    client = MongoClient(MONGO_SERVER_URL)
+    db = client[MONGO_DB_NAME]  # Database name
 
+elif DB_TYPE == 'mysql':
+    MYSQL_HOST = os.getenv('MYSQL_HOST', 'localhost')
+    MYSQL_PORT = os.getenv('MYSQL_PORT', '3306')
+    MYSQL_USER = os.getenv('MYSQL_USER', 'user')
+    MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD', 'password')
+    MYSQL_DB_NAME = os.getenv('MYSQL_DB_NAME', 'dbname')
+
+    MYSQL_SERVER_URL = f"mysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DB_NAME}"
+    engine = create_engine(MYSQL_SERVER_URL)
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    # Example: Define tables or ORM models here if needed
+    # from .models import Base
+    # Base.metadata.create_all(engine)
+
+else:
+    raise ValueError("Unsupported DB_TYPE. Please set DB_TYPE to 'mongodb' or 'mysql'.")

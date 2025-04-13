@@ -18,18 +18,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# @app.get('/')
-# async def home():
-#     return {'message': 'Hello👋 Developers💻'}
-
-# @app.post('/create_room')
-# async def create_room(name: str, password: str):
-#     try:
-#         add_room(name, password)
-#         return {'message': 'Room created successfully'}
-#     except Exception as e:
-#         raise HTTPException(status_code=400, detail=str(e))
-
 def start_server():
     uvicorn.run("server:app", port=10007, reload=True)
 
