@@ -126,6 +126,8 @@ celerybeat.pid
 
 # Environments
 .env
+.env.development
+.env.production
 env/
 venv/
 ENV/
@@ -165,3 +167,5 @@ cython_debug/
 
 # But include example files
 !.env.example
+!.env.development.example
+!.env.production.example

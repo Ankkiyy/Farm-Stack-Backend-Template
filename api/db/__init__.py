@@ -4,8 +4,11 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 
-# Load .env file
-load_dotenv()
+# Load development environment if ENVIRONMENT is set to development
+if os.getenv('ENVIRONMENT') == 'development':
+    load_dotenv('.env.development')
+else:
+    load_dotenv()
 
 DB_TYPE = os.getenv('DB_TYPE', 'mongodb')  # Default to MongoDB if not set
 
