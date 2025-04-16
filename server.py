@@ -19,7 +19,7 @@ app.add_middleware(
 )
 
 def start_server():
-    uvicorn.run("server:app", port=10007, reload=True)
+    uvicorn.run("server:app", port=10007, reload=True , host="0.0.0.0")
 
 if __name__ == '__main__':
     start_server()

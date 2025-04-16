@@ -3,17 +3,25 @@ from pymongo import MongoClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 
-MONGO_SERVER_URL = os.getenv('MONGO_SERVER_URL', 'mongodb://localhost:27017')  # Default to localhost if not set
-MONGO_DB_NAME = os.getenv('MONGO_DB_NAME', 'template')  # Default to localhost if not set
-
 DB_TYPE = os.getenv('DB_TYPE', 'mongodb')  # Default to MongoDB if not set
 
-if DB_TYPE == 'mongodb':
+# Initialize variables as None
+client = None
+db = None
+session = None
+
+isMySqlAvailable = False
+isMongoDBAvailable = False
+
+if DB_TYPE in ['mongodb', 'both']:
+    MONGO_SERVER_URL = os.getenv('MONGO_SERVER_URL', 'mongodb://localhost:27017')
+    MONGO_DB_NAME = os.getenv('MONGO_DB_NAME', 'template')
     # Initialize MongoDB connection
     client = MongoClient(MONGO_SERVER_URL)
-    db = client[MONGO_DB_NAME]  # Database name
+    db = client[MONGO_DB_NAME]
+    isMongoDBAvailable=True
 
-elif DB_TYPE == 'mysql':
+if DB_TYPE in ['mysql', 'both']:
     MYSQL_HOST = os.getenv('MYSQL_HOST', 'localhost')
     MYSQL_PORT = os.getenv('MYSQL_PORT', '3306')
     MYSQL_USER = os.getenv('MYSQL_USER', 'user')
@@ -24,10 +32,11 @@ elif DB_TYPE == 'mysql':
     engine = create_engine(MYSQL_SERVER_URL)
     Session = sessionmaker(bind=engine)
     session = Session()
+    isMySqlAvailable=True
 
     # Example: Define tables or ORM models here if needed
     # from .models import Base
     # Base.metadata.create_all(engine)
 
-else:
-    raise ValueError("Unsupported DB_TYPE. Please set DB_TYPE to 'mongodb' or 'mysql'.")
+if DB_TYPE not in ['mongodb', 'mysql', 'both']:
+    raise ValueError("Unsupported DB_TYPE. Please set DB_TYPE to 'mongodb', 'mysql', or 'both'.")

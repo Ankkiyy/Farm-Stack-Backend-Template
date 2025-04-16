@@ -1,0 +1,68 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "10007:10007"
+    depends_on:
+      - mongo
+      - mysql
+    networks:
+      - internal
+    environment:
+      - DB_TYPE=both
+      - MONGO_SERVER_URL=mongodb://mongo:27017
+      - MONGO_DB_NAME=template
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+      - MYSQL_DB_NAME=dbname
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+          ignore:
+            - .git/
+            - .venv/
+            - __pycache__/
+            - "*.pyc"
+        - action: rebuild
+          path: requirements.txt
+
+  mongo:
+    image: mongo:6
+    restart: always
+    networks:
+      - internal
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  mysql:
+    image: mysql:8
+    restart: always
+    networks:
+      - internal
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpassword
+      - MYSQL_DATABASE=dbname
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mongo_data:
+  mysql_data:
+
+networks:
+  internal:
+    driver: bridge
