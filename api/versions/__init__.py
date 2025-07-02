@@ -16,12 +16,6 @@ async def hello_world():
         content={
             "location": "api/",
             "message": "Hello World",
-            "version": "1.0.0",
-            "status": 200,
-            "status_message": "OK",
-            "data": {
-                "message": "Welcome to the API"
-            }
         }
     )
 

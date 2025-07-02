@@ -14,12 +14,6 @@ async def hello_world():
         content={
         "location": "api/v1",
         "message": "API Version V1 - Initial Version",
-        "version": "1.0.0",
-        "status": 200,
-        "status_message": "OK... Working Version 1",
-        "data": {
-            "message": "Welcome to the API"
-        }
     })
 
 # https://localhost:10007/api/v1/mail

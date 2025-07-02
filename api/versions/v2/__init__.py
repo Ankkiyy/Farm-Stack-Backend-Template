@@ -6,11 +6,5 @@ router = APIRouter()
 async def hello_world():
     return {
         "location" : "api/v2",
-        "message" : "API Version V1 - Initial Version",
-        "version" : "2.0.0",
-        "status" : 200,
-        "status_message" : "OK... Working Version 2",
-        "data" : {
-            "message" : "Welcome to the API"
-        }
+        "message" : "API Version V2 - Initial Version",
     }
