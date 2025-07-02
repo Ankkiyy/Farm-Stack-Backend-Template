@@ -39,7 +39,7 @@ USER appuser
 COPY . .
 
 # Expose the port that the application listens on.
-EXPOSE 10007
+EXPOSE 10001
 
 # Run the application.
 CMD ["python", "server.py"]

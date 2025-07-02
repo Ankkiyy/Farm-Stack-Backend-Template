@@ -24,10 +24,8 @@ async def hello_world():
             }
         }
     )
-    
-# Include the API Versions
 
-# Include the API Version 1
+# Include the API Versions
 
 # https://localhost:10007/api/v1
 router.include_router(v1_router, prefix="/v1", tags=["API Version 1"])

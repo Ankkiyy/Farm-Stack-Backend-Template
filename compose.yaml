@@ -1,4 +1,4 @@
-version: '3.9'
+version: '3.8'
 
 services:
   app:
@@ -6,17 +6,16 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "10007:10007"
-    depends_on:
-      - mongo
-      - mysql
+      - "10021:10001"
     networks:
-      - internal
+      - shared
     env_file:
       - .env
+    volumes:
+      - /opt/ipban/logs:/app/logs
     develop:
       watch:
-        - action: sync
+        - action: sync+restart
           path: .
           target: /app
           ignore:
@@ -26,38 +25,3 @@ services:
             - "*.pyc"
         - action: rebuild
           path: requirements.txt
-
-  mongo:
-    image: mongo:6
-    restart: always
-    networks:
-      - internal
-    ports:
-      - "27018:27017"
-    volumes:
-      - mongo_data:/data/db
-
-  mysql:
-    image: mysql:8
-    restart: always
-    networks:
-      - internal
-    environment:
-      - MYSQL_ROOT_PASSWORD=rootpassword
-      - MYSQL_DATABASE=${MYSQL_DB_NAME}
-      - MYSQL_USER=${MYSQL_USER}
-      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-    ports:
-      - "3306:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-    env_file:
-      - .env
-
-volumes:
-  mongo_data:
-  mysql_data:
-
-networks:
-  internal:
-    driver: bridge
