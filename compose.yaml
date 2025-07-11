@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  app:
+  api:
     build:
       context: .
       dockerfile: Dockerfile
@@ -13,15 +13,8 @@ services:
       - .env
     volumes:
       - /opt/ipban/logs:/app/logs
-    develop:
-      watch:
-        - action: sync+restart
-          path: .
-          target: /app
-          ignore:
-            - .git/
-            - .venv/
-            - __pycache__/
-            - "*.pyc"
-        - action: rebuild
-          path: requirements.txt
+
+networks:
+  shared:
+    external: true
+    name: shared_db_net
